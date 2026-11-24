@@ -75,14 +75,8 @@
       transition: opacity 0.42s var(--ease-editorial), padding 0.35s var(--ease-editorial);
     }
 
-    body.edit-mode .slide {
-      padding: 34px 5vw 36px;
-    }
-
-    .slide.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    body.edit-mode .slide { padding: 34px 5vw 36px; }
+    .slide.active { opacity: 1; pointer-events: auto; }
 
     /* Staggered Editorial Reveal (Always ON) */
     .anim-node {
@@ -91,137 +85,57 @@
       transition: opacity 0.56s var(--ease-editorial),
                   transform 0.56s var(--ease-editorial);
     }
-
-    .slide.active .anim-node.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .slide.active .anim-node.visible { opacity: 1; transform: translateY(0); }
 
     .hl {
       background: linear-gradient(transparent 52%, var(--highlight-yellow) 52%);
-      padding: 0 4px;
-      border-radius: 2px;
+      padding: 0 4px; border-radius: 2px;
     }
 
-    /* Editable Text Visual Cue (Only in edit-mode) */
+    /* Editable Text Visual Cue */
     body.edit-mode .editable-text {
       outline: 1px dashed rgba(20, 20, 20, 0.25);
-      outline-offset: 4px;
-      border-radius: 4px;
-      cursor: text;
+      outline-offset: 4px; border-radius: 4px; cursor: text;
       transition: outline-color 0.15s ease;
     }
-
-    body.edit-mode .dark .editable-text {
-      outline-color: rgba(255, 255, 255, 0.35);
-    }
-
-    body.edit-mode .editable-text:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-    }
+    body.edit-mode .dark .editable-text { outline-color: rgba(255, 255, 255, 0.35); }
+    body.edit-mode .editable-text:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
 
     /* Top & Bottom Bars inside Slide */
     .slide-top-title {
-      font-size: clamp(22px, 2.2vw, 30px);
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      color: var(--ink);
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
+      font-size: clamp(22px, 2.2vw, 30px); font-weight: 800; letter-spacing: -0.025em;
+      color: var(--ink); padding-bottom: 12px; border-bottom: 1px solid var(--line);
     }
-
-    .slide-kicker-cover {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--ink-sub);
-    }
-
-    .slide-bottom-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink-muted);
-    }
+    .slide-kicker-cover { font-size: 16px; font-weight: 700; color: var(--ink-sub); }
+    .slide-bottom-bar { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--ink-muted); }
 
     .mini-dots { display: flex; align-items: center; gap: 6px; }
     .mini-dot { width: 5px; height: 5px; border-radius: 50%; background: #cfcdc7; transition: all 0.25s ease; }
     .mini-dot.active { background: var(--ink); transform: scale(1.3); }
 
     /* Cover Layout */
-    .cover-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 44px;
-      align-items: center;
-      margin: auto 0;
-    }
-
-    .cover-title {
-      font-size: clamp(36px, 4.5vw, 64px);
-      font-weight: 900;
-      line-height: 1.14;
-      letter-spacing: -0.035em;
-      color: var(--ink);
-      margin-bottom: 22px;
-      word-break: keep-all;
-    }
-
-    .cover-sub {
-      font-size: clamp(16px, 1.5vw, 21px);
-      font-weight: 500;
-      line-height: 1.55;
-      color: var(--ink-sub);
-      word-break: keep-all;
-    }
-
+    .cover-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 44px; align-items: center; margin: auto 0; }
+    .cover-title { font-size: clamp(36px, 4.5vw, 64px); font-weight: 900; line-height: 1.14; letter-spacing: -0.035em; color: var(--ink); margin-bottom: 22px; word-break: keep-all; }
+    .cover-sub { font-size: clamp(16px, 1.5vw, 21px); font-weight: 500; line-height: 1.55; color: var(--ink-sub); word-break: keep-all; }
     .cover-visual-col { display: flex; flex-direction: column; gap: 14px; }
-
-    .accent-caption {
-      font-size: clamp(16px, 1.5vw, 20px);
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.02em;
-      text-align: right;
-    }
+    .accent-caption { font-size: clamp(16px, 1.5vw, 20px); font-weight: 800; color: var(--accent); letter-spacing: -0.02em; text-align: right; }
 
     /* Image Frame & Strict Edit-Mode Gating */
     .img-slot {
-      position: relative;
-      background: #ffffff;
-      border: 1px solid #dad8d2;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.035);
-      aspect-ratio: 16 / 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      cursor: default;
+      position: relative; background: #ffffff; border: 1px solid #dad8d2; border-radius: 10px;
+      padding: 20px; box-shadow: 0 8px 26px rgba(0, 0, 0, 0.035); aspect-ratio: 16 / 10;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: default;
     }
-
     .img-slot img, .img-slot svg { width: 100%; height: 100%; object-fit: contain; display: block; }
     .edit-overlay { display: none !important; pointer-events: none; }
 
     body.edit-mode .img-slot { cursor: pointer; border: 2px dashed #141414; }
     body.edit-mode .img-slot.selected { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(200, 75, 49, 0.18); }
     body.edit-mode .img-slot .edit-overlay {
-      display: flex !important;
-      position: absolute;
-      inset: 0;
-      background: rgba(20, 20, 20, 0.68);
-      color: #ffffff;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 14px;
-      font-weight: 700;
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      display: flex !important; position: absolute; inset: 0;
+      background: rgba(20, 20, 20, 0.68); color: #ffffff;
+      flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      font-size: 14px; font-weight: 700; opacity: 0; transition: opacity 0.2s ease;
     }
     body.edit-mode .img-slot:hover .edit-overlay,
     body.edit-mode .img-slot.selected .edit-overlay { opacity: 1; }
@@ -245,11 +159,7 @@
     .cards-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .cards-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; align-items: stretch; }
 
-    .ed-card {
-      background: #ffffff; border: 1px solid var(--line); border-radius: 12px;
-      padding: 22px 20px; display: flex; flex-direction: column; gap: 10px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
-    }
+    .ed-card { background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 22px 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); }
     .ed-card.dark { background: #191919; color: #ffffff; border-color: #191919; }
     .ed-icon { font-size: 26px; margin-bottom: 2px; }
     .ed-card-title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.3; }
@@ -275,74 +185,28 @@
 
     /* ================= FULL-WIDTH FIXED TOP EDITOR BAR ================= */
     #editToolbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 52px;
-      z-index: 115;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: #161616;
-      color: #ffffff;
-      padding: 0 20px;
+      position: fixed; top: 0; left: 0; right: 0; height: 52px; z-index: 115;
+      display: none; align-items: center; justify-content: space-between; gap: 12px;
+      background: #161616; color: #ffffff; padding: 0 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      font-size: 12px;
-      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); font-size: 12px; font-weight: 700;
     }
-
     body.edit-mode #editToolbar { display: flex; }
 
-    .tb-group {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
+    .tb-group { display: flex; align-items: center; gap: 7px; }
     .edit-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #f5f5f5;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(200, 75, 49, 0.18);
-      border: 1px solid rgba(200, 75, 49, 0.45);
-      white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 800;
+      color: #f5f5f5; padding: 5px 10px; border-radius: 999px;
+      background: rgba(200, 75, 49, 0.18); border: 1px solid rgba(200, 75, 49, 0.45); white-space: nowrap;
     }
-
-    .edit-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #ff6b4a;
-      box-shadow: 0 0 8px #ff6b4a;
-    }
-
+    .edit-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #ff6b4a; box-shadow: 0 0 8px #ff6b4a; }
     .tb-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.16); margin: 0 2px; }
 
     .tb-btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      transition: background 0.15s ease;
+      background: rgba(255, 255, 255, 0.08); color: #ffffff; border: none; border-radius: 6px;
+      padding: 6px 10px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; transition: background 0.15s ease;
     }
-
     .tb-btn:hover { background: rgba(255, 255, 255, 0.2); }
     .tb-btn.save { background: var(--accent); padding: 6px 12px; }
     .tb-btn.save:hover { background: #b33f27; }
@@ -350,110 +214,41 @@
     .tb-btn.github:hover { background: #1d4ed8; }
     .tb-btn:disabled { opacity: 0.55; cursor: wait; }
 
-    .tb-select {
-      background: #262626;
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 6px;
-      padding: 5px 8px;
-      font-size: 12px;
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    .tb-stepper {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
-      padding: 2px 6px;
-    }
-
+    .tb-select { background: #262626; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 6px; padding: 5px 8px; font-size: 12px; font-family: inherit; cursor: pointer; }
+    .tb-stepper { display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 2px 6px; }
     .tb-step-label { font-size: 11px; color: #a3a3a3; margin-right: 2px; }
     .tb-step-val { font-size: 11px; min-width: 32px; text-align: center; font-variant-numeric: tabular-nums; }
-    .tb-step-btn {
-      background: transparent; border: none; color: #ffffff;
-      font-size: 13px; font-weight: 800; cursor: pointer; padding: 2px 5px; border-radius: 4px;
-    }
+    .tb-step-btn { background: transparent; border: none; color: #ffffff; font-size: 13px; font-weight: 800; cursor: pointer; padding: 2px 5px; border-radius: 4px; }
     .tb-step-btn:hover { background: rgba(255, 255, 255, 0.18); }
 
-    /* AI Color Recommendation + Custom Picker Popover */
+    /* AI Color Popover */
     .color-wrap { position: relative; }
-
     #colorPopover {
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 0;
-      width: 248px;
-      background: #ffffff;
-      color: #141414;
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
-      border: 1px solid var(--line);
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 130;
+      position: absolute; top: calc(100% + 10px); left: 0; width: 248px; background: #ffffff; color: #141414;
+      border-radius: 12px; padding: 14px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28); border: 1px solid var(--line);
+      display: none; flex-direction: column; gap: 12px; z-index: 130;
     }
-
     #colorPopover.open { display: flex; }
-
-    .cp-section-title {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--ink-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
+    .cp-section-title { font-size: 11px; font-weight: 800; color: var(--ink-muted); display: flex; justify-content: space-between; align-items: center; }
     .cp-ai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-
-    .cp-swatch-btn {
-      display: flex; align-items: center; gap: 7px; padding: 6px 8px;
-      border: 1px solid var(--line); border-radius: 8px; background: #fafafa;
-      cursor: pointer; font-size: 12px; font-weight: 700; color: #141414; font-family: inherit;
-    }
+    .cp-swatch-btn { display: flex; align-items: center; gap: 7px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fafafa; cursor: pointer; font-size: 12px; font-weight: 700; color: #141414; font-family: inherit; }
     .cp-swatch-btn:hover { border-color: #141414; background: #f0efe9; }
-
     .cp-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.15); flex-shrink: 0; }
-
-    .cp-custom-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 8px; padding-top: 8px; border-top: 1px solid var(--line);
-    }
+    .cp-custom-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
     .cp-custom-row input[type="color"] { width: 36px; height: 28px; border: none; background: none; cursor: pointer; }
 
-    /* Toast Notification */
+    /* Toast & Modals */
     #toastNotice {
-      position: fixed;
-      top: 66px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-10px);
-      z-index: 160;
-      background: #141414;
-      color: #ffffff;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
+      position: fixed; top: 66px; left: 50%; transform: translateX(-50%) translateY(-10px); z-index: 160;
+      background: #141414; color: #ffffff; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 700;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28); opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease;
     }
     #toastNotice.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* Modals (Teacher Auth & GitHub Config) */
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.48); backdrop-filter: blur(4px);
-      z-index: 140; display: none; align-items: center; justify-content: center; padding: 20px;
-    }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.48); backdrop-filter: blur(4px); z-index: 140; display: none; align-items: center; justify-content: center; padding: 20px; }
     .modal-backdrop.open { display: flex; }
 
-    .auth-card { width: 100%; max-width: 380px; background: #ffffff; border-radius: 16px; padding: 28px 24px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25); text-align: center; }
+    .auth-card { width: 100%; max-width: 390px; background: #ffffff; border-radius: 16px; padding: 28px 24px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25); text-align: center; }
     .auth-card.shake { animation: shake 0.34s ease; }
     @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
@@ -463,13 +258,11 @@
     .auth-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .auth-btn { padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: #f4f4f2; font-weight: 700; cursor: pointer; font-family: inherit; }
     .auth-btn.primary { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+    .auth-btn.danger { background: #fff5f3; color: var(--accent); border-color: rgba(200, 75, 49, 0.35); margin-top: 8px; width: 100%; }
 
     .gh-form { text-align: left; display: flex; flex-direction: column; gap: 10px; margin: 16px 0 18px; }
     .gh-field label { display: block; font-size: 12px; font-weight: 700; color: var(--ink-sub); margin-bottom: 4px; }
-    .gh-field input {
-      width: 100%; padding: 9px 11px; border: 1.5px solid var(--line); border-radius: 8px;
-      font-size: 13px; font-family: inherit; outline: none;
-    }
+    .gh-field input { width: 100%; padding: 9px 11px; border: 1.5px solid var(--line); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; }
     .gh-field input:focus { border-color: var(--ink); }
     .gh-note { font-size: 11px; color: var(--ink-muted); line-height: 1.45; background: #f7f6f2; padding: 9px 11px; border-radius: 8px; }
 
@@ -511,7 +304,6 @@
       #editToolbar { height: auto; padding: 8px 14px; flex-wrap: wrap; }
       body.edit-mode .deck-stage { width: calc(100vw - 28px); height: calc(100vh - 96px - 90px); margin-top: 96px; }
     }
-
     @media (max-width: 860px) {
       .cover-grid, .cards-grid-3, .cards-grid-2, .index-list { grid-template-columns: 1fr; }
       .circle-flow { grid-template-columns: 1fr 1fr; }
@@ -528,14 +320,12 @@
   <!-- Toast Notice -->
   <div id="toastNotice"></div>
 
-  <!-- Full-Width Fixed Top Teacher Editor Bar (Only visible after passcode 2001) -->
+  <!-- Full-Width Fixed Top Teacher Editor Bar -->
   <header id="editToolbar" onmousedown="if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') event.preventDefault()">
-    <!-- Left: Mode Status -->
     <div class="tb-group">
       <span class="edit-status-badge"><span class="edit-status-dot"></span>편집 모드</span>
     </div>
 
-    <!-- Center: Formatting Controls -->
     <div class="tb-group">
       <button class="tb-btn" onclick="execFormat('bold')" title="굵게 (Ctrl/Cmd+B)"><strong>B</strong></button>
       <button class="tb-btn" onclick="toggleHighlightSelection()" title="형광펜 강조 (Ctrl/Cmd+Z 취소 가능)">🖍 형광펜</button>
@@ -581,7 +371,6 @@
       </div>
     </div>
 
-    <!-- Right: Sync & Exit Actions -->
     <div class="tb-group">
       <button id="btnGithubPush" class="tb-btn github" onclick="pushToGitHub()" title="공유 중인 GitHub 페이지에 바로 반영">☁️ GitHub 반영</button>
       <button class="tb-btn" onclick="openGithubConfigModal()" title="GitHub 저장소·토큰 설정">⚙️</button>
@@ -833,7 +622,7 @@
       <div style="font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 6px;">TEACHER ONLY</div>
       <div style="font-size: 20px; font-weight: 800;">교사 인증 코드 입력</div>
       <p style="font-size: 13px; color: var(--ink-sub); margin-top: 6px;">편집 모드를 열려면 4자리 코드를 입력하세요.</p>
-      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" />
+      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off" />
       <div id="authErrorMsg" class="auth-error"></div>
       <div class="auth-actions">
         <button class="auth-btn" onclick="closeAuthModal()">취소</button>
@@ -854,7 +643,7 @@
         </div>
         <div class="gh-field">
           <label>저장소 이름 (Repository)</label>
-          <input id="ghRepo" type="text" placeholder="예: physical-ai-lab" />
+          <input id="ghRepo" type="text" placeholder="예: ponybot-lab" />
         </div>
         <div class="gh-field" style="display:grid; grid-template-columns: 1fr 1.6fr; gap:8px;">
           <div>
@@ -867,17 +656,18 @@
           </div>
         </div>
         <div class="gh-field">
-          <label>Personal Access Token (Contents: Read &amp; Write)</label>
-          <input id="ghToken" type="password" placeholder="github_pat_..." />
+          <label>Personal Access Token (창 닫으면 자동 삭제)</label>
+          <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off" />
         </div>
         <div class="gh-note">
-          🔒 토큰은 선생님 브라우저(localStorage)에만 저장되며, GitHub에 올라가는 HTML 파일에는 절대 포함되지 않습니다.
+          🔒 보안 강화: 토큰은 현재 브라우저 탭(sessionStorage)에만 임시 보관되며, 탭을 닫으면 자동 삭제되고 HTML 파일에는 절대 저장되지 않습니다.
         </div>
       </div>
       <div class="auth-actions">
         <button class="auth-btn" onclick="closeGithubConfigModal()">취소</button>
         <button class="auth-btn primary" onclick="saveGithubConfig()">설정 저장</button>
       </div>
+      <button class="auth-btn danger" onclick="clearGithubToken()">🗑️ 저장된 토큰 즉시 삭제</button>
     </div>
   </div>
 
@@ -954,8 +744,11 @@
   </nav>
 
   <script>
-    const TEACHER_PASSCODE = '2001';
-    const GH_STORAGE_KEY = 'hamssam_deck_gh_config';
+    // 평문 비밀번호 대신 SHA-256 해시값으로 검증
+    const TEACHER_PASSCODE_HASH = '85d6385b945c0d602103db39b0b654b2af93b5127938e26a959c123f0789b948';
+    const GH_META_KEY = 'hamssam_deck_gh_meta';
+    const GH_TOKEN_KEY = 'hamssam_gh_session_token';
+
     const slides = Array.from(document.querySelectorAll('.slide'));
     let currentIndex = 0;
     let penActive = false;
@@ -983,6 +776,63 @@
       { name: '스카이 블루', hex: '#7DD3FC' },
       { name: '보조 실버', hex: '#CBD5E1' }
     ];
+
+    // SHA-256 해시 함수 (HTTPS에서는 Web Crypto API, 로컬 file://에서는 순수 JS 폴백 사용)
+    async function sha256Hex(message) {
+      if (window.crypto && window.crypto.subtle) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      // Pure JS SHA-256 fallback for local file:// testing
+      const rightRotate = (v, a) => (v >>> a) | (v << (32 - a));
+      const maxWord = Math.pow(2, 32);
+      let result = '', words = [], asciiBitLength = message.length * 8;
+      const hash = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+      const k = [
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+      ];
+      message += '\x80';
+      while (message.length % 64 - 56) message += '\x00';
+      for (let i = 0; i < message.length; i++) {
+        const j = message.charCodeAt(i);
+        words[i >> 2] |= j << ((3 - i) % 4) * 8;
+      }
+      words[words.length] = ((asciiBitLength / maxWord) | 0);
+      words[words.length] = (asciiBitLength);
+      for (let j = 0; j < words.length;) {
+        const w = words.slice(j, j += 16);
+        const oldHash = hash.slice(0);
+        for (let i = 0; i < 64; i++) {
+          const w15 = w[i - 15], w2 = w[i - 2];
+          const a = hash[0], e = hash[4];
+          const temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+            + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i]
+            + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+            + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+          const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+            + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash.unshift((temp1 + temp2) | 0);
+          hash[4] = (hash[4] + temp1) | 0;
+          hash.pop();
+        }
+        for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+      }
+      for (let i = 0; i < 8; i++) {
+        for (let j = 3; j + 1; j--) {
+          const b = (hash[i] >> (j * 8)) & 255;
+          result += ((b < 16) ? 0 : '') + b.toString(16);
+        }
+      }
+      return result;
+    }
 
     function showToast(msg, duration = 3000) {
       const el = document.getElementById('toastNotice');
@@ -1016,10 +866,7 @@
       }
     });
 
-    function clearRevealTimers() {
-      revealTimers.forEach(t => clearTimeout(t));
-      revealTimers = [];
-    }
+    function clearRevealTimers() { revealTimers.forEach(t => clearTimeout(t)); revealTimers = []; }
 
     function animateSlideNodes(slide) {
       clearRevealTimers();
@@ -1068,16 +915,17 @@
       setTimeout(() => input.focus(), 50);
     }
 
-    function closeAuthModal() {
-      document.getElementById('teacherAuthModal').classList.remove('open');
-    }
+    function closeAuthModal() { document.getElementById('teacherAuthModal').classList.remove('open'); }
 
-    function verifyTeacherCode() {
+    async function verifyTeacherCode() {
       const input = document.getElementById('authCodeInput');
       const err = document.getElementById('authErrorMsg');
       const card = document.getElementById('authCard');
-      if (input.value.trim() === TEACHER_PASSCODE) {
+      const enteredHash = await sha256Hex(input.value.trim());
+
+      if (enteredHash === TEACHER_PASSCODE_HASH) {
         isTeacherAuthenticated = true;
+        input.value = '';
         closeAuthModal();
         enterEditMode();
       } else {
@@ -1134,7 +982,6 @@
       const lsPx = style.letterSpacing === 'normal' ? 0 : parseFloat(style.letterSpacing);
       const lsEm = +(lsPx / fontSize).toFixed(2);
       document.getElementById('lsVal').textContent = lsEm.toFixed(2);
-
       renderAiColorSwatches(el);
     }
 
@@ -1147,11 +994,9 @@
       if (!isTeacherAuthenticated || !editMode) return;
       const sel = window.getSelection();
       if (!sel.rangeCount || sel.isCollapsed) return;
-
       const range = sel.getRangeAt(0);
       const node = range.commonAncestorContainer;
       const hlSpan = (node.nodeType === 1 ? node : node.parentElement)?.closest('.hl');
-
       if (hlSpan) {
         const unwrapRange = document.createRange();
         unwrapRange.selectNode(hlSpan);
@@ -1241,15 +1086,8 @@
         selectedSlot = slot;
         slot.classList.add('selected');
       });
-      slot.addEventListener('dragover', (e) => {
-        if (!isTeacherAuthenticated || !editMode) return;
-        e.preventDefault();
-        slot.classList.add('selected');
-      });
-      slot.addEventListener('dragleave', () => {
-        if (!isTeacherAuthenticated || !editMode) return;
-        if (slot !== selectedSlot) slot.classList.remove('selected');
-      });
+      slot.addEventListener('dragover', (e) => { if (!isTeacherAuthenticated || !editMode) return; e.preventDefault(); slot.classList.add('selected'); });
+      slot.addEventListener('dragleave', () => { if (!isTeacherAuthenticated || !editMode) return; if (slot !== selectedSlot) slot.classList.remove('selected'); });
       slot.addEventListener('drop', (e) => {
         if (!isTeacherAuthenticated || !editMode) return;
         e.preventDefault();
@@ -1283,19 +1121,27 @@
       clone.querySelectorAll('.editable-text').forEach(el => el.removeAttribute('contenteditable'));
       clone.querySelectorAll('.img-slot').forEach(s => s.classList.remove('selected'));
       clone.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+      // 항상 1번 슬라이드가 첫 화면으로 저장되도록 초기화
+      clone.querySelectorAll('.slide').forEach((s, i) => {
+        s.classList.toggle('active', i === 0);
+        s.querySelectorAll('.anim-node').forEach(n => n.classList.remove('visible'));
+      });
       clone.querySelector('#colorPopover')?.classList.remove('open');
       clone.querySelector('#teacherAuthModal')?.classList.remove('open');
       clone.querySelector('#githubConfigModal')?.classList.remove('open');
       clone.querySelector('#indexModal')?.classList.remove('open');
       clone.querySelector('#curtainOverlay')?.classList.remove('open');
       clone.querySelector('#toastNotice')?.classList.remove('show');
+      const tokenInput = clone.querySelector('#ghToken');
+      if (tokenInput) { tokenInput.value = ''; tokenInput.removeAttribute('value'); }
+      const authInput = clone.querySelector('#authCodeInput');
+      if (authInput) { authInput.value = ''; authInput.removeAttribute('value'); }
       return '<!DOCTYPE html>\n' + clone.outerHTML;
     }
 
     function exportCleanHTML() {
       if (!isTeacherAuthenticated || !editMode) return;
-      const htmlContent = buildCleanHTML();
-      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const blob = new Blob([buildCleanHTML()], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1305,7 +1151,7 @@
       showToast('💾 session1_deck.html 파일이 저장되었습니다.');
     }
 
-    /* ================= GITHUB DIRECT SYNC ================= */
+    /* ================= GITHUB DIRECT SYNC (SESSION-ONLY TOKEN) ================= */
     function getDefaultGithubConfig() {
       let owner = '', repo = '', path = 'session1_deck.html';
       if (location.hostname.endsWith('.github.io')) {
@@ -1319,8 +1165,9 @@
 
     function loadGithubConfig() {
       try {
-        const saved = JSON.parse(localStorage.getItem(GH_STORAGE_KEY) || 'null');
-        return saved ? { ...getDefaultGithubConfig(), ...saved } : getDefaultGithubConfig();
+        const meta = JSON.parse(localStorage.getItem(GH_META_KEY) || 'null') || {};
+        const token = sessionStorage.getItem(GH_TOKEN_KEY) || '';
+        return { ...getDefaultGithubConfig(), ...meta, token };
       } catch {
         return getDefaultGithubConfig();
       }
@@ -1337,33 +1184,37 @@
       document.getElementById('githubConfigModal').classList.add('open');
     }
 
-    function closeGithubConfigModal() {
-      document.getElementById('githubConfigModal').classList.remove('open');
-    }
+    function closeGithubConfigModal() { document.getElementById('githubConfigModal').classList.remove('open'); }
 
     function saveGithubConfig() {
-      const cfg = {
+      const meta = {
         owner: document.getElementById('ghOwner').value.trim(),
         repo: document.getElementById('ghRepo').value.trim(),
         branch: document.getElementById('ghBranch').value.trim() || 'main',
-        path: document.getElementById('ghPath').value.trim().replace(/^\/+/, '') || 'session1_deck.html',
-        token: document.getElementById('ghToken').value.trim()
+        path: document.getElementById('ghPath').value.trim().replace(/^\/+/, '') || 'session1_deck.html'
       };
-      if (!cfg.owner || !cfg.repo || !cfg.token) {
+      const token = document.getElementById('ghToken').value.trim();
+      if (!meta.owner || !meta.repo || !token) {
         showToast('⚠️ 아이디, 저장소 이름, 토큰을 모두 입력해 주세요.');
         return;
       }
-      localStorage.setItem(GH_STORAGE_KEY, JSON.stringify(cfg));
+      localStorage.setItem(GH_META_KEY, JSON.stringify(meta));
+      sessionStorage.setItem(GH_TOKEN_KEY, token);
       closeGithubConfigModal();
-      showToast('✅ GitHub 연동 설정이 저장되었습니다.');
+      showToast('✅ 설정 저장 완료 (토큰은 탭을 닫으면 자동 삭제됩니다)');
+    }
+
+    function clearGithubToken() {
+      sessionStorage.removeItem(GH_TOKEN_KEY);
+      document.getElementById('ghToken').value = '';
+      showToast('🗑️ 저장된 GitHub 토큰이 즉시 삭제되었습니다.');
     }
 
     function utf8ToBase64(str) {
       const bytes = new TextEncoder().encode(str);
       let binary = '';
-      const chunkSize = 0x8000;
-      for (let i = 0; i < bytes.length; i += chunkSize) {
-        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
       }
       return btoa(binary);
     }
@@ -1373,7 +1224,7 @@
       const cfg = loadGithubConfig();
       if (!cfg.owner || !cfg.repo || !cfg.token) {
         openGithubConfigModal();
-        showToast('먼저 GitHub 연동 설정을 입력해 주세요.');
+        showToast('먼저 GitHub 연동 설정과 토큰을 입력해 주세요.');
         return;
       }
 
@@ -1392,19 +1243,17 @@
         let sha = undefined;
         const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(cfg.branch)}`, { headers });
         if (getRes.ok) {
-          const data = await getRes.json();
-          sha = data.sha;
+          sha = (await getRes.json()).sha;
         } else if (getRes.status !== 404) {
           throw new Error(`조회 실패 (${getRes.status}) — 저장소명과 토큰 권한을 확인하세요.`);
         }
 
-        const htmlContent = buildCleanHTML();
         const putRes = await fetch(apiUrl, {
           method: 'PUT',
           headers,
           body: JSON.stringify({
             message: `교사 편집 모드 업데이트 (${new Date().toLocaleString('ko-KR')})`,
-            content: utf8ToBase64(htmlContent),
+            content: utf8ToBase64(buildCleanHTML()),
             branch: cfg.branch,
             ...(sha ? { sha } : {})
           })
@@ -1414,7 +1263,6 @@
           const errData = await putRes.json().catch(() => ({}));
           throw new Error(errData.message || `업로드 실패 (${putRes.status})`);
         }
-
         showToast('✅ GitHub에 반영 완료! 약 30~60초 후 공유 링크에 적용됩니다.', 4500);
       } catch (err) {
         showToast(`❌ 오류: ${err.message}`, 5000);
@@ -1487,7 +1335,6 @@
     canvas.addEventListener('pointermove', (e) => { if (!isDrawing || !penActive) return; ctx.lineTo(e.clientX, e.clientY); ctx.stroke(); });
     window.addEventListener('pointerup', () => { isDrawing = false; });
 
-    // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
       if (document.getElementById('teacherAuthModal').classList.contains('open')) return;
       if (document.getElementById('githubConfigModal').classList.contains('open')) return;
