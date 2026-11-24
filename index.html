@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="ko"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>함쌤의 정보 LAB — 자율주행(AI 포니봇) 웹 교안 포털</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;family=Noto+Sans+KR:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-paper: #f7f6f2;
@@ -370,10 +369,10 @@
     }
   </style>
 </head>
-<body>
+<body class="">
 
   <!-- Toast Notice -->
-  <div id="toastNotice"></div>
+  <div id="toastNotice" class="">✅ 설정 저장 완료 (토큰은 탭을 닫으면 자동 삭제됩니다)</div>
 
   <!-- Full-Width Fixed Top Teacher Editor Bar -->
   <header id="editToolbar" onmousedown="if(event.target.tagName !== 'INPUT') event.preventDefault()">
@@ -386,7 +385,7 @@
       <button class="tb-btn" onclick="execFormat('bold')" title="굵게"><strong>B</strong></button>
       <button class="tb-btn" onclick="toggleHighlightSelection()" title="형광펜 강조">🖍 형광펜</button>
       <div class="tb-sep"></div>
-      <button id="btnGithubPush" class="tb-btn github" onclick="pushToGitHub()">☁️ GitHub 반영</button>
+      <button id="btnGithubPush" class="tb-btn github" onclick="pushToGitHub()" disabled="">☁️ 반영 중...</button>
       <button class="tb-btn" onclick="openGithubConfigModal()" title="GitHub 저장소·토큰 설정">⚙️</button>
       <button class="tb-btn save" onclick="exportCleanHTML()">💾 저장</button>
       <button class="tb-btn" onclick="exitEditMode()">종료</button>
@@ -413,9 +412,8 @@
       <div>
         <div class="hero-kicker editable-text">PHYSICAL AI · AUTONOMOUS DRIVING LAB</div>
         <h1 class="hero-title editable-text">
-          코드와 센서로 깨우는<br />
-          <span class="hl">AI 포니봇</span> 자율주행 수업
-        </h1>
+          코드와 센서로 깨우는<br>
+          <span class="hl">AI 포니봇</span> 자율주행</h1>
         <p class="hero-desc editable-text">
           마이크로비트(micro:bit V2)와 메카넘휠, 초음파·라인·AI 카메라 센서를 활용해
           감지–학습–판단–행동의 피지컬 AI 원리를 단계별로 실습하는 수업 포털입니다.
@@ -478,7 +476,7 @@
       <div style="font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 6px;">TEACHER ONLY</div>
       <div style="font-size: 20px; font-weight: 800;">교사 인증 코드 입력</div>
       <p style="font-size: 13px; color: var(--ink-sub); margin-top: 6px;">포털 편집 모드를 열려면 4자리 코드를 입력하세요.</p>
-      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off" />
+      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
       <div id="authErrorMsg" class="auth-error"></div>
       <div class="auth-actions">
         <button class="auth-btn" onclick="closeAuthModal()">취소</button>
@@ -495,25 +493,25 @@
       <div class="gh-form">
         <div class="gh-field">
           <label>GitHub 아이디 (Owner)</label>
-          <input id="ghOwner" type="text" placeholder="예: hamssam-lab" />
+          <input id="ghOwner" type="text" placeholder="예: hamssam-lab">
         </div>
         <div class="gh-field">
           <label>저장소 이름 (Repository)</label>
-          <input id="ghRepo" type="text" placeholder="예: ponybot-lab" />
+          <input id="ghRepo" type="text" placeholder="예: ponybot-lab">
         </div>
         <div class="gh-field" style="display:grid; grid-template-columns: 1fr 1.6fr; gap:8px;">
           <div>
             <label>브랜치</label>
-            <input id="ghBranch" type="text" placeholder="main" />
+            <input id="ghBranch" type="text" placeholder="main">
           </div>
           <div>
             <label>파일 경로</label>
-            <input id="ghPath" type="text" placeholder="index.html" />
+            <input id="ghPath" type="text" placeholder="index.html">
           </div>
         </div>
         <div class="gh-field">
           <label>Personal Access Token (창 닫으면 자동 삭제)</label>
-          <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off" />
+          <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off">
         </div>
         <div class="gh-note">
           🔒 보안 강화: 토큰은 현재 브라우저 탭(sessionStorage)에만 임시 보관되며, 탭을 닫으면 자동 삭제되고 HTML 파일에는 절대 저장되지 않습니다.
@@ -1001,5 +999,6 @@
 
     renderSessions('all');
   </script>
-</body>
-</html>
+
+
+</body></html>
