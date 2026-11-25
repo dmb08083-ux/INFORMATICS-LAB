@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="ko"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>함쌤의 정보 LAB — 자율주행(AI 포니봇) 웹 교안 포털</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800;900&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;family=Noto+Sans+KR:wght@400;500;700;800;900&amp;family=Noto+Serif+KR:wght@500;700;900&amp;display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-paper: #f7f6f2;
@@ -392,13 +391,13 @@
     }
   </style>
 </head>
-<body>
+<body class="">
 
   <!-- Toast Notice -->
-  <div id="toastNotice"></div>
+  <div id="toastNotice" class="">✅ 설정 저장 완료 (토큰은 탭을 닫으면 자동 삭제됩니다)</div>
 
     <!-- Full-Width Fixed Top Teacher Editor Bar (Unified with Deck) -->
-  <header id="editToolbar" onmousedown="if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') event.preventDefault()">
+  <header id="editToolbar" onmousedown="if(event.target.tagName !== 'SELECT' &amp;&amp; event.target.tagName !== 'INPUT') event.preventDefault()">
     <div class="tb-group">
       <span class="edit-status-badge"><span class="edit-status-dot"></span>편집 모드</span>
     </div>
@@ -420,11 +419,11 @@
             <span>✨ AI 추천 색</span>
             <span id="cpBgBadge" style="font-weight:600; color:var(--accent);">밝은 배경용</span>
           </div>
-          <div id="cpAiGrid" class="cp-ai-grid"></div>
+          <div id="cpAiGrid" class="cp-ai-grid"><button class="cp-swatch-btn"><span class="cp-dot" style="background:#141414"></span><span>기본 잉크</span></button><button class="cp-swatch-btn"><span class="cp-dot" style="background:#C84B31"></span><span>핵심 강조</span></button><button class="cp-swatch-btn"><span class="cp-dot" style="background:#1D4ED8"></span><span>신뢰 네이비</span></button><button class="cp-swatch-btn"><span class="cp-dot" style="background:#15803D"></span><span>안정 그린</span></button><button class="cp-swatch-btn"><span class="cp-dot" style="background:#6B6A65"></span><span>보조 그레이</span></button><button class="cp-swatch-btn"><span class="cp-dot" style="background:#6D28D9"></span><span>딥 퍼플</span></button></div>
           <div class="cp-custom-row">
             <span style="font-size:12px; font-weight:700;">직접 선택</span>
             <div style="display:flex; align-items:center; gap:6px;">
-              <input id="customColorInput" type="color" value="#141414" oninput="applyTextColor(this.value)" />
+              <input id="customColorInput" type="color" value="#141414" oninput="applyTextColor(this.value)">
               <button class="tb-btn" style="background:#141414;" onclick="toggleColorPopover(false)">닫기</button>
             </div>
           </div>
@@ -436,20 +435,20 @@
       <div class="tb-stepper" title="선택한 문단의 줄간격 조절">
         <span class="tb-step-label">줄간격</span>
         <button class="tb-step-btn" onclick="adjustLineHeight(-0.1)">−</button>
-        <span id="lhVal" class="tb-step-val">1.5</span>
+        <span id="lhVal" class="tb-step-val">1.6</span>
         <button class="tb-step-btn" onclick="adjustLineHeight(0.1)">+</button>
       </div>
 
       <div class="tb-stepper" title="선택한 문단의 글자간격 조절">
         <span class="tb-step-label">자간</span>
         <button class="tb-step-btn" onclick="adjustLetterSpacing(-0.01)">−</button>
-        <span id="lsVal" class="tb-step-val">-0.02</span>
+        <span id="lsVal" class="tb-step-val">0.00</span>
         <button class="tb-step-btn" onclick="adjustLetterSpacing(0.01)">+</button>
       </div>
     </div>
 
     <div class="tb-group">
-      <button id="btnGithubPush" class="tb-btn github" onclick="pushToGitHub()" title="공유 중인 GitHub 페이지에 바로 반영">☁️ GitHub 반영</button>
+      <button id="btnGithubPush" class="tb-btn github" onclick="pushToGitHub()" title="공유 중인 GitHub 페이지에 바로 반영" disabled="">☁️ 반영 중...</button>
       <button class="tb-btn" onclick="openGithubConfigModal()" title="GitHub 저장소·토큰 설정">⚙️</button>
       <button class="tb-btn save" onclick="exportCleanHTML()" title="로컬 PC에 HTML 파일로 백업">💾 저장</button>
       <button class="tb-btn" onclick="exitEditMode()">종료</button>
@@ -463,7 +462,7 @@
         <span class="editable-text">함쌤의 정보 LAB</span>
       </a>
       <div class="header-meta">
-        <span class="editable-text">자율주행(AI 포니봇) 동아리</span>
+        <span class="editable-text">피지컬 AI 마스터(자율주행 자동차)<br></span>
         <span class="pill-tag editable-text">총 13차시 커리큘럼</span>
         <a href="./index.html" class="teacher-trigger-btn" title="전체 메인 페이지로 이동">← 전체 메인</a>
         <button class="teacher-trigger-btn" onclick="requestEditMode()" title="교사 편집 모드 (단축키 E)">교사 편집</button>
@@ -477,13 +476,11 @@
       <div>
         <div class="hero-kicker editable-text">PHYSICAL AI · AUTONOMOUS DRIVING LAB</div>
         <h1 class="hero-title editable-text">
-          코드와 센서로 깨우는<br />
+          코드와 센서로 깨우는<br>
           <span class="hl">AI 포니봇</span> 자율주행 수업
         </h1>
         <p class="hero-desc editable-text">
-          마이크로비트(micro:bit V2)와 메카넘휠, 초음파·라인·AI 카메라 센서를 활용해
-          감지–학습–판단–행동의 피지컬 AI 원리를 단계별로 실습하는 수업 포털입니다.
-        </p>
+          마이크로비트(V2)와 메카넘휠, 초음파·라인·AI 카메라 센서 등을 활용해&nbsp;<div>입력-처리-출력의 3단계 피지컬 AI 원리를 단계별로 실습합니다</div></p>
         <div class="hero-actions">
           <a href="./ponybot_part1.html" class="btn-primary">
             <span>01차시 교안 바로 열기</span>
@@ -538,12 +535,12 @@
 
   <!-- Teacher Auth Modal -->
   <div id="teacherAuthModal" class="modal-backdrop" onclick="if(event.target.id==='teacherAuthModal') closeAuthModal()">
-    <div id="authCard" class="auth-card">
+    <div id="authCard" class="auth-card shake">
       <div style="font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 6px;">TEACHER ONLY</div>
       <div style="font-size: 20px; font-weight: 800;">교사 인증 코드 입력</div>
       <p style="font-size: 13px; color: var(--ink-sub); margin-top: 6px;">포털 편집 모드를 열려면 4자리 코드를 입력하세요.</p>
-      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off" />
-      <div id="authErrorMsg" class="auth-error"></div>
+      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <div id="authErrorMsg" class="auth-error">인증 코드가 일치하지 않습니다.</div>
       <div class="auth-actions">
         <button class="auth-btn" onclick="closeAuthModal()">취소</button>
         <button class="auth-btn primary" onclick="verifyTeacherCode()">확인</button>
@@ -559,25 +556,25 @@
       <div class="gh-form">
         <div class="gh-field">
           <label>GitHub 아이디 (Owner)</label>
-          <input id="ghOwner" type="text" placeholder="예: hamssam-lab" />
+          <input id="ghOwner" type="text" placeholder="예: hamssam-lab">
         </div>
         <div class="gh-field">
           <label>저장소 이름 (Repository)</label>
-          <input id="ghRepo" type="text" placeholder="예: INFORMATICS-LAB" />
+          <input id="ghRepo" type="text" placeholder="예: INFORMATICS-LAB">
         </div>
         <div class="gh-field" style="display:grid; grid-template-columns: 1fr 1.6fr; gap:8px;">
           <div>
             <label>브랜치</label>
-            <input id="ghBranch" type="text" placeholder="main" />
+            <input id="ghBranch" type="text" placeholder="main">
           </div>
           <div>
             <label>파일 경로</label>
-            <input id="ghPath" type="text" placeholder="ponybot_main.html" />
+            <input id="ghPath" type="text" placeholder="ponybot_main.html">
           </div>
         </div>
         <div class="gh-field">
           <label>Personal Access Token (창 닫으면 자동 삭제)</label>
-          <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off" />
+          <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off">
         </div>
         <div class="gh-note">
           🔒 보안 강화: 토큰은 현재 브라우저 탭(sessionStorage)에만 임시 보관되며, 탭을 닫으면 자동 삭제되고 HTML 파일에는 절대 저장되지 않습니다.
@@ -597,7 +594,7 @@
   {
     "num": "01",
     "title": "피지컬 AI와 포니봇 첫 만남",
-    "desc": "피지컬 AI 4단계 원리, 핵심 부품 구조, 안전 수칙, MakeCode 첫 실습과 OLED 고유 이름 확인",
+    "desc": "피지컬 AI 4단계 원리, 핵심 부품 구조, 안전 수칙, MakeCode 실습과 고유 이름 확인",
     "meta": "슬라이드 6장 · 기초",
     "status": "ready",
     "href": "./ponybot_part1.html"
@@ -1166,5 +1163,6 @@
 
     renderSessions('all');
   </script>
-</body>
-</html>
+
+
+</body></html>
