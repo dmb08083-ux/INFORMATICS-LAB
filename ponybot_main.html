@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>함쌤의 정보 LAB — 자율주행(AI 포니봇) 웹 교안 포털</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800;900&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-paper: #f7f6f2;
+      --ink: #141414;
+      --ink-sub: #4a4a4a;
+      --ink-muted: #8a8882;
+      --accent: #c84b31;
+      --accent-soft: rgba(200, 75, 49, 0.08);
+      --highlight-yellow: rgba(250, 214, 92, 0.48);
+      --line: #dfddd7;
+      --card-bg: #ffffff;
+      --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-paper);
+      color: var(--ink);
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: padding-top 0.3s var(--ease-editorial);
+    }
+
+    body.edit-mode {
+      padding-top: 52px;
+      background-color: #efeee9;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    
+    /* ================= FULL-WIDTH FIXED TOP EDITOR BAR ================= */
+    #editToolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #161616;
+      color: #ffffff;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    body.edit-mode #editToolbar { display: flex; }
+
+    .tb-group { display: flex; align-items: center; gap: 7px; }
+    .edit-status-badge {
+      display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 800;
+      color: #f5f5f5; padding: 5px 10px; border-radius: 999px;
+      background: rgba(200, 75, 49, 0.18); border: 1px solid rgba(200, 75, 49, 0.45); white-space: nowrap;
+    }
+    .edit-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #ff6b4a; box-shadow: 0 0 8px #ff6b4a; }
+    .tb-sep { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.16); margin: 0 2px; }
+
+    .tb-btn {
+      background: rgba(255, 255, 255, 0.08); color: #ffffff; border: none; border-radius: 6px;
+      padding: 6px 10px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; transition: background 0.15s ease;
+    }
+    .tb-btn:hover { background: rgba(255, 255, 255, 0.2); }
+    .tb-btn.save { background: var(--accent); padding: 6px 12px; }
+    .tb-btn.save:hover { background: #b33f27; }
+    .tb-btn.github { background: #2563eb; padding: 6px 12px; }
+    .tb-btn.github:hover { background: #1d4ed8; }
+    .tb-btn:disabled { opacity: 0.55; cursor: wait; }
+
+    .tb-select { background: #262626; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 6px; padding: 5px 8px; font-size: 12px; font-family: inherit; cursor: pointer; }
+    .tb-stepper { display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 2px 6px; }
+    .tb-step-label { font-size: 11px; color: #a3a3a3; margin-right: 2px; }
+    .tb-step-val { font-size: 11px; min-width: 32px; text-align: center; font-variant-numeric: tabular-nums; }
+    .tb-step-btn { background: transparent; border: none; color: #ffffff; font-size: 13px; font-weight: 800; cursor: pointer; padding: 2px 5px; border-radius: 4px; }
+    .tb-step-btn:hover { background: rgba(255, 255, 255, 0.18); }
+
+    /* AI Color Popover */
+    .color-wrap { position: relative; }
+    #colorPopover {
+      position: absolute; top: calc(100% + 10px); left: 0; width: 248px; background: #ffffff; color: #141414;
+      border-radius: 12px; padding: 14px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28); border: 1px solid var(--line);
+      display: none; flex-direction: column; gap: 12px; z-index: 130;
+    }
+    #colorPopover.open { display: flex; }
+    .cp-section-title { font-size: 11px; font-weight: 800; color: var(--ink-muted); display: flex; justify-content: space-between; align-items: center; }
+    .cp-ai-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .cp-swatch-btn { display: flex; align-items: center; gap: 7px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fafafa; cursor: pointer; font-size: 12px; font-weight: 700; color: #141414; font-family: inherit; }
+    .cp-swatch-btn:hover { border-color: #141414; background: #f0efe9; }
+    .cp-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.15); flex-shrink: 0; }
+    .cp-custom-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+    .cp-custom-row input[type="color"] { width: 36px; height: 28px; border: none; background: none; cursor: pointer; }
+
+    .hl {
+      background: linear-gradient(transparent 52%, rgba(250, 214, 92, 0.48) 52%);
+      padding: 0 4px; border-radius: 2px;
+    }
+
+    @media (max-width: 1024px) {
+      #editToolbar { height: auto; padding: 8px 14px; flex-wrap: wrap; }
+      body.edit-mode { padding-top: 96px; }
+      body.edit-mode .site-header { top: 96px; }
+    }
+
+    /* Editable Text Visual Cue */
+    body.edit-mode .editable-text {
+      outline: 1px dashed rgba(20, 20, 20, 0.28);
+      outline-offset: 3px;
+      border-radius: 4px;
+      cursor: text;
+    }
+    body.edit-mode .dark .editable-text { outline-color: rgba(255, 255, 255, 0.35); }
+    body.edit-mode .editable-text:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* Top Navigation Bar */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(247, 246, 242, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    body.edit-mode .site-header { top: 52px; }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 900; font-size: 17px; letter-spacing: -0.025em;
+    }
+    .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+
+    .header-meta {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 700; color: var(--ink-sub);
+    }
+
+    .pill-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 999px;
+      border: 1px solid var(--line); background: #ffffff;
+      font-size: 12px; font-weight: 700; color: var(--ink);
+    }
+
+    .teacher-trigger-btn {
+      background: transparent; border: 1px solid var(--line); border-radius: 999px;
+      padding: 5px 11px; font-size: 12px; font-weight: 700; color: var(--ink-muted);
+      cursor: pointer; font-family: inherit; transition: all 0.15s ease;
+    }
+    .teacher-trigger-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* Main Container */
+    .container {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+      flex: 1;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 48px;
+    }
+
+    .hero-kicker {
+      display: inline-block; font-size: 13px; font-weight: 800;
+      color: var(--accent); letter-spacing: 0.04em; margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 4.2vw, 52px);
+      font-weight: 900; line-height: 1.18; letter-spacing: -0.035em;
+      margin-bottom: 18px; word-break: keep-all;
+    }
+
+    .hl {
+      background: linear-gradient(transparent 54%, var(--highlight-yellow) 54%);
+      padding: 0 4px; border-radius: 2px;
+    }
+
+    .hero-desc {
+      font-size: 16px; color: var(--ink-sub); word-break: keep-all;
+      margin-bottom: 28px; max-width: 540px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ink); color: #ffffff;
+      padding: 13px 22px; border-radius: 10px; font-size: 15px; font-weight: 800;
+      transition: transform 0.2s var(--ease-editorial), background 0.2s ease;
+    }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #ffffff; color: var(--ink); border: 1px solid var(--line);
+      padding: 12px 18px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      transition: border-color 0.2s ease, transform 0.2s var(--ease-editorial);
+    }
+    .btn-secondary:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+    /* Hero Status Card */
+    .hero-card {
+      background: #181818; color: #ffffff; border-radius: 16px;
+      padding: 28px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      display: flex; flex-direction: column; gap: 18px;
+    }
+
+    .hero-card-top {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #94a3b8;
+    }
+
+    .live-badge { display: inline-flex; align-items: center; gap: 6px; color: #5eead4; font-weight: 700; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #5eead4; box-shadow: 0 0 8px #5eead4; }
+
+    .hero-card-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.35; }
+
+    .hero-card-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+      font-size: 14px; color: rgba(255, 255, 255, 0.82);
+    }
+    .hero-card-list li { display: flex; align-items: center; gap: 8px; }
+
+    /* Section Header */
+    .section-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 16px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .section-title { font-size: 24px; font-weight: 900; letter-spacing: -0.025em; }
+    .section-sub { font-size: 14px; color: var(--ink-muted); font-weight: 600; }
+
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .filter-btn {
+      padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+      background: #ffffff; color: var(--ink-sub); font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: all 0.15s ease;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+
+    .add-session-btn {
+      display: none;
+      padding: 6px 14px; border-radius: 999px; border: none;
+      background: var(--accent); color: #ffffff; font-size: 13px; font-weight: 800;
+      cursor: pointer; font-family: inherit;
+    }
+    body.edit-mode .add-session-btn { display: inline-flex; align-items: center; gap: 4px; }
+
+    /* Session Grid */
+    .session-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .session-card {
+      background: var(--card-bg); border: 1px solid var(--line); border-radius: 14px;
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
+      gap: 16px; transition: transform 0.25s var(--ease-editorial), box-shadow 0.25s var(--ease-editorial), border-color 0.2s ease;
+    }
+
+    .session-card.ready { cursor: pointer; border-color: #cfcdc7; }
+    .session-card.ready:hover { transform: translateY(-4px); border-color: var(--ink); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06); }
+    .session-card.locked { opacity: 0.62; background: #fbfaf7; cursor: default; }
+
+    body.edit-mode .session-card { opacity: 1; cursor: default; }
+    body.edit-mode .session-card:hover { transform: none; box-shadow: none; }
+
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .session-num { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 800; color: var(--ink-muted); }
+
+    .status-badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+    .status-badge.open { background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(200, 75, 49, 0.3); }
+    .status-badge.soon { background: #efeee9; color: var(--ink-muted); }
+
+    .card-title { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.35; margin-bottom: 8px; word-break: keep-all; }
+    .card-desc { font-size: 14px; color: var(--ink-sub); word-break: keep-all; }
+
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 14px; border-top: 1px solid #efeee9; font-size: 13px; font-weight: 700;
+    }
+    .card-link-label { color: var(--accent); display: inline-flex; align-items: center; gap: 4px; }
+    .card-meta { color: var(--ink-muted); font-size: 12px; font-weight: 600; }
+
+    /* Teacher-Only Card Edit Controls */
+    .card-edit-controls {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .card-edit-row { display: flex; gap: 6px; align-items: center; }
+    .card-edit-input {
+      flex: 1; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px;
+      font-size: 12px; font-family: 'JetBrains Mono', monospace; outline: none;
+    }
+    .card-edit-input:focus { border-color: var(--ink); }
+    .card-mini-btn {
+      padding: 5px 9px; border-radius: 6px; border: 1px solid var(--line);
+      background: #f4f4f2; font-size: 11px; font-weight: 800; cursor: pointer; font-family: inherit;
+    }
+    .card-mini-btn.active { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+    .card-mini-btn.danger { color: var(--accent); border-color: rgba(200, 75, 49, 0.35); background: #fff5f3; }
+
+    /* Toast & Modals */
+    #toastNotice {
+      position: fixed; top: 66px; left: 50%; transform: translateX(-50%) translateY(-10px);
+      z-index: 160; background: #141414; color: #ffffff; padding: 10px 18px;
+      border-radius: 999px; font-size: 13px; font-weight: 700;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28); opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    #toastNotice.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.48); backdrop-filter: blur(4px);
+      z-index: 140; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .auth-card { width: 100%; max-width: 390px; background: #ffffff; border-radius: 16px; padding: 28px 24px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25); text-align: center; }
+    .auth-card.shake { animation: shake 0.34s ease; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+    .auth-input { width: 100%; margin: 16px 0 8px; padding: 12px; font-size: 20px; font-weight: 800; letter-spacing: 0.35em; text-align: center; border: 1.5px solid var(--line); border-radius: 10px; outline: none; font-family: inherit; }
+    .auth-input:focus { border-color: var(--ink); }
+    .auth-error { min-height: 18px; font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+    .auth-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .auth-btn { padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: #f4f4f2; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .auth-btn.primary { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+    .auth-btn.danger { background: #fff5f3; color: var(--accent); border-color: rgba(200, 75, 49, 0.35); margin-top: 8px; width: 100%; }
+
+    .gh-form { text-align: left; display: flex; flex-direction: column; gap: 10px; margin: 16px 0 18px; }
+    .gh-field label { display: block; font-size: 12px; font-weight: 700; color: var(--ink-sub); margin-bottom: 4px; }
+    .gh-field input { width: 100%; padding: 9px 11px; border: 1.5px solid var(--line); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; }
+    .gh-field input:focus { border-color: var(--ink); }
+    .gh-note { font-size: 11px; color: var(--ink-muted); line-height: 1.45; background: #f7f6f2; padding: 9px 11px; border-radius: 8px; }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      .session-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .session-grid { grid-template-columns: 1fr; }
+      .header-meta .pill-tag { display: none; }
+      .container { padding: 36px 18px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Notice -->
+  <div id="toastNotice"></div>
+
+    <!-- Full-Width Fixed Top Teacher Editor Bar (Unified with Deck) -->
+  <header id="editToolbar" onmousedown="if(event.target.tagName !== 'SELECT' && event.target.tagName !== 'INPUT') event.preventDefault()">
+    <div class="tb-group">
+      <span class="edit-status-badge"><span class="edit-status-dot"></span>편집 모드</span>
+    </div>
+
+    <div class="tb-group">
+      <button class="tb-btn" onclick="execFormat('bold')" title="굵게 (Ctrl/Cmd+B)"><strong>B</strong></button>
+      <button class="tb-btn" onclick="toggleHighlightSelection()" title="형광펜 강조">🖍 형광펜</button>
+
+      <select id="fontSelect" class="tb-select" onchange="applyFontFamily(this.value)" title="서체 변경">
+        <option value="'Noto Sans KR', sans-serif">고딕 (기본)</option>
+        <option value="'Noto Serif KR', serif">명조체</option>
+        <option value="'JetBrains Mono', monospace">코딩 고정폭</option>
+      </select>
+
+      <div class="color-wrap">
+        <button class="tb-btn" onclick="toggleColorPopover()" title="글자 색 변경">🎨 색상 ▾</button>
+        <div id="colorPopover">
+          <div class="cp-section-title">
+            <span>✨ AI 추천 색</span>
+            <span id="cpBgBadge" style="font-weight:600; color:var(--accent);">밝은 배경용</span>
+          </div>
+          <div id="cpAiGrid" class="cp-ai-grid"></div>
+          <div class="cp-custom-row">
+            <span style="font-size:12px; font-weight:700;">직접 선택</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <input id="customColorInput" type="color" value="#141414" oninput="applyTextColor(this.value)" />
+              <button class="tb-btn" style="background:#141414;" onclick="toggleColorPopover(false)">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-stepper" title="선택한 글자·문단의 크기 조절">
+        <span class="tb-step-label">크기</span>
+        <button class="tb-step-btn" onclick="adjustFontSize(-2)">−</button>
+        <span id="fsVal" class="tb-step-val" style="min-width:36px;">16px</span>
+        <button class="tb-step-btn" onclick="adjustFontSize(2)">+</button>
+      </div>
+
+      <div class="tb-stepper" title="선택한 문단의 줄간격 조절">
+        <span class="tb-step-label">줄간격</span>
+        <button class="tb-step-btn" onclick="adjustLineHeight(-0.1)">−</button>
+        <span id="lhVal" class="tb-step-val">1.5</span>
+        <button class="tb-step-btn" onclick="adjustLineHeight(0.1)">+</button>
+      </div>
+
+      <div class="tb-stepper" title="선택한 문단의 글자간격 조절">
+        <span class="tb-step-label">자간</span>
+        <button class="tb-step-btn" onclick="adjustLetterSpacing(-0.01)">−</button>
+        <span id="lsVal" class="tb-step-val">-0.02</span>
+        <button class="tb-step-btn" onclick="adjustLetterSpacing(0.01)">+</button>
+      </div>
+    </div>
+
+    <div class="tb-group">
+      <button id="btnGithubPush" class="tb-btn github" onclick="pushToGitHub()" title="공유 중인 GitHub 페이지에 바로 반영">☁️ GitHub 반영</button>
+      <button class="tb-btn" onclick="openGithubConfigModal()" title="GitHub 저장소·토큰 설정">⚙️</button>
+      <button class="tb-btn save" onclick="exportCleanHTML()" title="로컬 PC에 HTML 파일로 백업">💾 저장</button>
+      <button class="tb-btn" onclick="exitEditMode()">종료</button>
+    </div>
+  </header>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="./index.html" class="brand">
+        <span class="brand-dot"></span>
+        <span class="editable-text">함쌤의 정보 LAB</span>
+      </a>
+      <div class="header-meta">
+        <span class="editable-text">자율주행(AI 포니봇) 동아리</span>
+        <span class="pill-tag editable-text">총 13차시 커리큘럼</span>
+        <a href="./index.html" class="teacher-trigger-btn" title="전체 메인 페이지로 이동">← 전체 메인</a>
+        <button class="teacher-trigger-btn" onclick="requestEditMode()" title="교사 편집 모드 (단축키 E)">교사 편집</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div>
+        <div class="hero-kicker editable-text">PHYSICAL AI · AUTONOMOUS DRIVING LAB</div>
+        <h1 class="hero-title editable-text">
+          코드와 센서로 깨우는<br />
+          <span class="hl">AI 포니봇</span> 자율주행 수업
+        </h1>
+        <p class="hero-desc editable-text">
+          마이크로비트(micro:bit V2)와 메카넘휠, 초음파·라인·AI 카메라 센서를 활용해
+          감지–학습–판단–행동의 피지컬 AI 원리를 단계별로 실습하는 수업 포털입니다.
+        </p>
+        <div class="hero-actions">
+          <a href="./ponybot_part1.html" class="btn-primary">
+            <span>01차시 교안 바로 열기</span>
+            <span>→</span>
+          </a>
+          <a href="https://makecode.microbit.org/" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            <span>🧩 MakeCode 에디터 열기</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card dark">
+        <div class="hero-card-top">
+          <span>CURRENT SESSION</span>
+          <span class="live-badge"><span class="live-dot"></span>수업 공개 중</span>
+        </div>
+        <div class="hero-card-title editable-text">01차시 · 피지컬 AI와 포니봇 첫 만남</div>
+        <ul class="hero-card-list">
+          <li class="editable-text">✓ 피지컬 AI 4단계 핵심 원리 이해</li>
+          <li class="editable-text">✓ 포니봇 핵심 하드웨어와 안전 수칙</li>
+          <li class="editable-text">✓ MakeCode 첫 표정 띄우기 &amp; OLED 5자리 이름 확인</li>
+        </ul>
+        <div style="padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.12); display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#94a3b8;">
+          <span>단축키: ←/→ 이동 · D 판서 · E 교사 편집</span>
+          <a href="./ponybot_part1.html" style="color:#ffffff; font-weight:800;">입장하기 →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Curriculum Grid -->
+    <section>
+      <div class="section-head">
+        <div>
+          <h2 class="section-title editable-text">차시별 웹 교안 목록</h2>
+          <p class="section-sub editable-text">공개된 차시 카드를 클릭하면 전체 화면 슬라이드 교안으로 이동합니다.</p>
+        </div>
+        <div class="filter-tabs" role="tablist">
+          <button class="filter-btn active" onclick="filterSessions('all', this)">전체</button>
+          <button class="filter-btn" onclick="filterSessions('ready', this)">공개된 교안</button>
+          <button class="filter-btn" onclick="filterSessions('soon', this)">준비 중</button>
+          <button class="add-session-btn" onclick="addNewSession()">+ 새 차시 추가</button>
+        </div>
+      </div>
+
+      <div id="sessionGrid" class="session-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer editable-text">
+    함쌤의 정보 LAB · 자율주행(AI 포니봇) 교육 포털 · Powered by GitHub Pages
+  </footer>
+
+  <!-- Teacher Auth Modal -->
+  <div id="teacherAuthModal" class="modal-backdrop" onclick="if(event.target.id==='teacherAuthModal') closeAuthModal()">
+    <div id="authCard" class="auth-card">
+      <div style="font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 6px;">TEACHER ONLY</div>
+      <div style="font-size: 20px; font-weight: 800;">교사 인증 코드 입력</div>
+      <p style="font-size: 13px; color: var(--ink-sub); margin-top: 6px;">포털 편집 모드를 열려면 4자리 코드를 입력하세요.</p>
+      <input id="authCodeInput" class="auth-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off" />
+      <div id="authErrorMsg" class="auth-error"></div>
+      <div class="auth-actions">
+        <button class="auth-btn" onclick="closeAuthModal()">취소</button>
+        <button class="auth-btn primary" onclick="verifyTeacherCode()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub Sync Config Modal -->
+  <div id="githubConfigModal" class="modal-backdrop" onclick="if(event.target.id==='githubConfigModal') closeGithubConfigModal()">
+    <div class="auth-card" style="max-width: 420px;">
+      <div style="font-size: 12px; font-weight: 800; color: #2563eb; letter-spacing: 0.08em; margin-bottom: 4px;">GITHUB AUTO-SYNC</div>
+      <div style="font-size: 19px; font-weight: 800;">GitHub 연동 설정 (포털)</div>
+      <div class="gh-form">
+        <div class="gh-field">
+          <label>GitHub 아이디 (Owner)</label>
+          <input id="ghOwner" type="text" placeholder="예: hamssam-lab" />
+        </div>
+        <div class="gh-field">
+          <label>저장소 이름 (Repository)</label>
+          <input id="ghRepo" type="text" placeholder="예: INFORMATICS-LAB" />
+        </div>
+        <div class="gh-field" style="display:grid; grid-template-columns: 1fr 1.6fr; gap:8px;">
+          <div>
+            <label>브랜치</label>
+            <input id="ghBranch" type="text" placeholder="main" />
+          </div>
+          <div>
+            <label>파일 경로</label>
+            <input id="ghPath" type="text" placeholder="ponybot_main.html" />
+          </div>
+        </div>
+        <div class="gh-field">
+          <label>Personal Access Token (창 닫으면 자동 삭제)</label>
+          <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off" />
+        </div>
+        <div class="gh-note">
+          🔒 보안 강화: 토큰은 현재 브라우저 탭(sessionStorage)에만 임시 보관되며, 탭을 닫으면 자동 삭제되고 HTML 파일에는 절대 저장되지 않습니다.
+        </div>
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn" onclick="closeGithubConfigModal()">취소</button>
+        <button class="auth-btn primary" onclick="saveGithubConfig()">설정 저장</button>
+      </div>
+      <button class="auth-btn danger" onclick="clearGithubToken()">🗑️ 저장된 토큰 즉시 삭제</button>
+    </div>
+  </div>
+
+  <!-- Curriculum Data Store (Synced automatically on Save/Push) -->
+  <script id="sessionsData" type="application/json">
+[
+  {
+    "num": "01",
+    "title": "피지컬 AI와 포니봇 첫 만남",
+    "desc": "피지컬 AI 4단계 원리, 핵심 부품 구조, 안전 수칙, MakeCode 첫 실습과 OLED 고유 이름 확인",
+    "meta": "슬라이드 6장 · 기초",
+    "status": "ready",
+    "href": "./ponybot_part1.html"
+  },
+  {
+    "num": "02",
+    "title": "메카넘휠 8방향 정밀 주행",
+    "desc": "45° 롤러 원리를 이해하고 전후좌우 게걸음·대각선·제자리 회전 제어 코드 설계",
+    "meta": "주행 제어",
+    "status": "soon",
+    "href": "./ponybot_part2.html"
+  },
+  {
+    "num": "03",
+    "title": "초음파 센서와 장애물 회피",
+    "desc": "거리(cm) 데이터를 실시간으로 읽어 안전 거리에서 자동 정지 및 우회 판단 로직 구현",
+    "meta": "센서 판단",
+    "status": "soon",
+    "href": "./ponybot_part3.html"
+  },
+  {
+    "num": "04",
+    "title": "라인 센서와 자율 차선 주행",
+    "desc": "바닥의 검은 주행선과 교차로를 인식해 스스로 경로를 따라가는 라인 트레이싱",
+    "meta": "경로 추종",
+    "status": "soon",
+    "href": "./ponybot_part4.html"
+  },
+  {
+    "num": "05",
+    "title": "컬러 센서와 신호등 미션",
+    "desc": "빨강·초록·노랑 바닥 컬러 마커에 따라 정지·감속·출발하는 신호 반응 주행",
+    "meta": "상황 인식",
+    "status": "soon",
+    "href": "./ponybot_part5.html"
+  },
+  {
+    "num": "06",
+    "title": "AI 비전 카메라와 표지판 인식",
+    "desc": "학습된 비전 모델로 좌회전·우회전·정지 표지판을 판별하고 주행 명령 연결",
+    "meta": "AI 비전",
+    "status": "soon",
+    "href": "./ponybot_part6.html"
+  }
+]
+  </script>
+
+  <script>
+    // 평문 비밀번호 대신 SHA-256 해시값으로 검증
+    const TEACHER_PASSCODE_HASH = '85d6385b945c0d602103db39b0b654b2af93b5127938e26a959c123f0789b948';
+    const GH_META_KEY = 'hamssam_gh_meta_ponybot_main';
+    const GH_TOKEN_KEY = 'hamssam_gh_session_token';
+
+    let SESSIONS = JSON.parse(document.getElementById('sessionsData').textContent);
+    let currentFilter = 'all';
+    let isTeacherAuthenticated = false;
+    let editMode = false;
+    let toastTimer = null;
+
+    // SHA-256 해시 함수 (HTTPS에서는 Web Crypto API, 로컬 file://에서는 순수 JS 폴백 사용)
+    async function sha256Hex(message) {
+      if (window.crypto && window.crypto.subtle) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      // Pure JS SHA-256 fallback for local file:// testing
+      const rightRotate = (v, a) => (v >>> a) | (v << (32 - a));
+      const maxWord = Math.pow(2, 32);
+      let result = '', words = [], asciiBitLength = message.length * 8;
+      const hash = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+      const k = [
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+      ];
+      message += '\x80';
+      while (message.length % 64 - 56) message += '\x00';
+      for (let i = 0; i < message.length; i++) {
+        const j = message.charCodeAt(i);
+        words[i >> 2] |= j << ((3 - i) % 4) * 8;
+      }
+      words[words.length] = ((asciiBitLength / maxWord) | 0);
+      words[words.length] = (asciiBitLength);
+      for (let j = 0; j < words.length;) {
+        const w = words.slice(j, j += 16);
+        const oldHash = hash.slice(0);
+        for (let i = 0; i < 64; i++) {
+          const w15 = w[i - 15], w2 = w[i - 2];
+          const a = hash[0], e = hash[4];
+          const temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+            + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i]
+            + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+            + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+          const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+            + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash.unshift((temp1 + temp2) | 0);
+          hash[4] = (hash[4] + temp1) | 0;
+          hash.pop();
+        }
+        for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+      }
+      for (let i = 0; i < 8; i++) {
+        for (let j = 3; j + 1; j--) {
+          const b = (hash[i] >> (j * 8)) & 255;
+          result += ((b < 16) ? 0 : '') + b.toString(16);
+        }
+      }
+      return result;
+    }
+
+    function showToast(msg, duration = 3000) {
+      const el = document.getElementById('toastNotice');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), duration);
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderSessions(filter = currentFilter) {
+      currentFilter = filter;
+      const grid = document.getElementById('sessionGrid');
+      grid.innerHTML = '';
+
+      SESSIONS.forEach((s, idx) => {
+        if (!editMode) {
+          if (filter === 'ready' && s.status !== 'ready') return;
+          if (filter === 'soon' && s.status !== 'soon') return;
+        }
+        const isReady = s.status === 'ready';
+        const el = document.createElement(!editMode && isReady ? 'a' : 'div');
+        el.className = `session-card ${isReady ? 'ready' : 'locked'}`;
+        if (!editMode && isReady && s.href) el.href = s.href;
+
+        const editControls = editMode ? `
+          <div class="card-edit-controls">
+            <div class="card-edit-row">
+              <button class="card-mini-btn ${isReady ? 'active' : ''}" onclick="toggleSessionStatus(${idx})">
+                ${isReady ? '✅ 수업 공개 중' : '🔒 준비 중 (클릭해 공개)'}
+              </button>
+              <button class="card-mini-btn danger" onclick="deleteSession(${idx})">삭제</button>
+            </div>
+            <div class="card-edit-row">
+              <span style="color:#8a8882; font-weight:700;">링크:</span>
+              <input class="card-edit-input" type="text" value="${escapeHtml(s.href || '')}" placeholder="./ponybot_part2.html" oninput="updateSessionField(${idx}, 'href', this.value)" />
+            </div>
+          </div>
+        ` : '';
+
+        el.innerHTML = `
+          <div>
+            <div class="card-top">
+              <span class="session-num">SESSION ${escapeHtml(s.num)}</span>
+              <span class="status-badge ${isReady ? 'open' : 'soon'}">${isReady ? '수업 가능' : '준비 중'}</span>
+            </div>
+            <h3 class="card-title ${editMode ? 'editable-text' : ''}" ${editMode ? `contenteditable="true" oninput="updateSessionField(${idx}, 'title', this.innerText)"` : ''}>${escapeHtml(s.title)}</h3>
+            <p class="card-desc ${editMode ? 'editable-text' : ''}" ${editMode ? `contenteditable="true" oninput="updateSessionField(${idx}, 'desc', this.innerText)"` : ''}>${escapeHtml(s.desc)}</p>
+          </div>
+          <div>
+            <div class="card-footer">
+              <span class="card-meta ${editMode ? 'editable-text' : ''}" ${editMode ? `contenteditable="true" oninput="updateSessionField(${idx}, 'meta', this.innerText)"` : ''}>${escapeHtml(s.meta)}</span>
+              ${isReady ? '<span class="card-link-label">교안 열기 →</span>' : '<span class="card-meta">업데이트 예정</span>'}
+            </div>
+            ${editControls}
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    function updateSessionField(idx, field, value) {
+      if (!isTeacherAuthenticated || !editMode) return;
+      SESSIONS[idx][field] = value.trim();
+    }
+
+    function toggleSessionStatus(idx) {
+      if (!isTeacherAuthenticated || !editMode) return;
+      SESSIONS[idx].status = SESSIONS[idx].status === 'ready' ? 'soon' : 'ready';
+      renderSessions();
+    }
+
+    function addNewSession() {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const nextNum = String(SESSIONS.length + 1).padStart(2, '0');
+      SESSIONS.push({
+        num: nextNum,
+        title: `${nextNum}차시 새 수업 제목`,
+        desc: '수업 핵심 목표와 실습 내용을 입력하세요.',
+        meta: '신규 차시',
+        status: 'soon',
+        href: `./ponybot_part${SESSIONS.length + 1}.html`
+      });
+      renderSessions();
+      showToast(`✨ ${nextNum}차시 카드가 추가되었습니다.`);
+    }
+
+    function deleteSession(idx) {
+      if (!isTeacherAuthenticated || !editMode) return;
+      if (!confirm(`SESSION ${SESSIONS[idx].num} 카드를 삭제할까요?`)) return;
+      SESSIONS.splice(idx, 1);
+      renderSessions();
+    }
+
+    function filterSessions(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSessions(type);
+    }
+
+    /* ================= TEACHER AUTH & EDIT MODE ================= */
+    function requestEditMode() {
+      if (editMode) { exitEditMode(); return; }
+      if (isTeacherAuthenticated) { enterEditMode(); return; }
+      openAuthModal();
+    }
+
+    function openAuthModal() {
+      const modal = document.getElementById('teacherAuthModal');
+      const input = document.getElementById('authCodeInput');
+      document.getElementById('authErrorMsg').textContent = '';
+      input.value = '';
+      modal.classList.add('open');
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function closeAuthModal() {
+      document.getElementById('teacherAuthModal').classList.remove('open');
+    }
+
+    async function verifyTeacherCode() {
+      const input = document.getElementById('authCodeInput');
+      const err = document.getElementById('authErrorMsg');
+      const card = document.getElementById('authCard');
+      const enteredHash = await sha256Hex(input.value.trim());
+
+      if (enteredHash === TEACHER_PASSCODE_HASH) {
+        isTeacherAuthenticated = true;
+        input.value = '';
+        closeAuthModal();
+        enterEditMode();
+      } else {
+        err.textContent = '인증 코드가 일치하지 않습니다.';
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    document.getElementById('authCodeInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') verifyTeacherCode();
+      if (e.key === 'Escape') closeAuthModal();
+    });
+
+    function enterEditMode() {
+      if (!isTeacherAuthenticated) return;
+      editMode = true;
+      document.body.classList.add('edit-mode');
+      document.querySelectorAll('.editable-text').forEach(el => el.setAttribute('contenteditable', 'true'));
+      renderSessions();
+    }
+
+    function exitEditMode() {
+      editMode = false;
+      document.body.classList.remove('edit-mode');
+      document.querySelectorAll('.editable-text').forEach(el => el.removeAttribute('contenteditable'));
+      toggleColorPopover(false);
+      activeEditableEl = null;
+      closeGithubConfigModal();
+      renderSessions();
+    }
+
+    
+    const AI_COLORS_LIGHT = [
+      { name: '기본 잉크', hex: '#141414' },
+      { name: '핵심 강조', hex: '#C84B31' },
+      { name: '신뢰 네이비', hex: '#1D4ED8' },
+      { name: '안정 그린', hex: '#15803D' },
+      { name: '보조 그레이', hex: '#6B6A65' },
+      { name: '딥 퍼플', hex: '#6D28D9' }
+    ];
+
+    const AI_COLORS_DARK = [
+      { name: '기본 화이트', hex: '#FFFFFF' },
+      { name: '코랄 강조', hex: '#FF7B61' },
+      { name: '네온 민트', hex: '#5EEAD4' },
+      { name: '소프트 옐로', hex: '#FDE047' },
+      { name: '스카이 블루', hex: '#7DD3FC' },
+      { name: '보조 실버', hex: '#CBD5E1' }
+    ];
+
+    let activeEditableEl = null;
+
+    document.addEventListener('focusin', (e) => {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const el = e.target.closest('.editable-text');
+      if (el) {
+        activeEditableEl = el;
+        syncToolbarWithElement(el);
+      }
+    });
+
+    function syncToolbarWithElement(el) {
+      const style = window.getComputedStyle(el);
+      const fontSize = parseFloat(style.fontSize) || 16;
+      const fsValEl = document.getElementById('fsVal');
+      if (fsValEl) fsValEl.textContent = Math.round(fontSize) + 'px';
+      const lhPx = parseFloat(style.lineHeight);
+      const lhRatio = isNaN(lhPx) ? 1.5 : +(lhPx / fontSize).toFixed(2);
+      document.getElementById('lhVal').textContent = lhRatio.toFixed(1);
+
+      const lsPx = style.letterSpacing === 'normal' ? 0 : parseFloat(style.letterSpacing);
+      const lsEm = +(lsPx / fontSize).toFixed(2);
+      document.getElementById('lsVal').textContent = lsEm.toFixed(2);
+      renderAiColorSwatches(el);
+    }
+
+    function execFormat(cmd, value = null) {
+      if (!isTeacherAuthenticated || !editMode) return;
+      document.execCommand(cmd, false, value);
+    }
+
+    function toggleHighlightSelection() {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const sel = window.getSelection();
+      if (!sel.rangeCount || sel.isCollapsed) return;
+      const range = sel.getRangeAt(0);
+      const node = range.commonAncestorContainer;
+      const hlSpan = (node.nodeType === 1 ? node : node.parentElement)?.closest('.hl');
+      if (hlSpan) {
+        const unwrapRange = document.createRange();
+        unwrapRange.selectNode(hlSpan);
+        sel.removeAllRanges();
+        sel.addRange(unwrapRange);
+        document.execCommand('insertHTML', false, hlSpan.innerHTML);
+      } else {
+        const fragment = range.cloneContents();
+        const div = document.createElement('div');
+        div.appendChild(fragment);
+        document.execCommand('insertHTML', false, `<span class="hl">${div.innerHTML}</span>`);
+      }
+    }
+
+    function applyFontFamily(fontValue) {
+      if (!isTeacherAuthenticated || !editMode || !activeEditableEl) return;
+      activeEditableEl.style.fontFamily = fontValue;
+    }
+
+    function renderAiColorSwatches(el) {
+      const isDark = el && el.closest('.dark');
+      const palette = isDark ? AI_COLORS_DARK : AI_COLORS_LIGHT;
+      document.getElementById('cpBgBadge').textContent = isDark ? '어두운 카드용' : '밝은 배경용';
+      const grid = document.getElementById('cpAiGrid');
+      grid.innerHTML = '';
+      palette.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'cp-swatch-btn';
+        btn.innerHTML = `<span class="cp-dot" style="background:${item.hex}"></span><span>${item.name}</span>`;
+        btn.onmousedown = (e) => { e.preventDefault(); applyTextColor(item.hex); };
+        grid.appendChild(btn);
+      });
+    }
+
+    function toggleColorPopover(force) {
+      const pop = document.getElementById('colorPopover');
+      const willOpen = typeof force === 'boolean' ? force : !pop.classList.contains('open');
+      if (willOpen) renderAiColorSwatches(activeEditableEl);
+      pop.classList.toggle('open', willOpen);
+    }
+
+    function applyTextColor(hex) {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const sel = window.getSelection();
+      if (sel && !sel.isCollapsed) document.execCommand('foreColor', false, hex);
+      else if (activeEditableEl) activeEditableEl.style.color = hex;
+    }
+
+    function adjustFontSize(delta) {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const sel = window.getSelection();
+      const hasPartialSel = sel && sel.rangeCount > 0 && !sel.isCollapsed && activeEditableEl &&
+        activeEditableEl.contains(sel.anchorNode) && activeEditableEl.contains(sel.focusNode) &&
+        sel.toString().trim() !== activeEditableEl.textContent.trim();
+
+      if (hasPartialSel) {
+        const range = sel.getRangeAt(0);
+        const node = range.commonAncestorContainer;
+        const existingSpan = (node.nodeType === 1 ? node : node.parentElement)?.closest('span[data-fs]');
+        if (existingSpan && activeEditableEl.contains(existingSpan) && sel.toString().trim() === existingSpan.textContent.trim()) {
+          const cur = parseFloat(window.getComputedStyle(existingSpan).fontSize) || 16;
+          const next = Math.min(96, Math.max(10, Math.round(cur + delta)));
+          existingSpan.style.fontSize = next + 'px';
+          document.getElementById('fsVal').textContent = next + 'px';
+          return;
+        }
+        const refEl = node.nodeType === 1 ? node : node.parentElement;
+        const cur = parseFloat(window.getComputedStyle(refEl).fontSize) || 16;
+        const next = Math.min(96, Math.max(10, Math.round(cur + delta)));
+        const markerId = 'fs-tmp-' + Date.now();
+        const div = document.createElement('div');
+        div.appendChild(range.cloneContents());
+        document.execCommand('insertHTML', false, `<span id="${markerId}" data-fs="1" style="font-size:${next}px">${div.innerHTML}</span>`);
+        const inserted = document.getElementById(markerId);
+        if (inserted) {
+          inserted.removeAttribute('id');
+          const newRange = document.createRange();
+          newRange.selectNodeContents(inserted);
+          sel.removeAllRanges();
+          sel.addRange(newRange);
+        }
+        document.getElementById('fsVal').textContent = next + 'px';
+        return;
+      }
+
+      if (!activeEditableEl) return;
+      const cur = parseFloat(window.getComputedStyle(activeEditableEl).fontSize) || 16;
+      const next = Math.min(96, Math.max(10, Math.round(cur + delta)));
+      activeEditableEl.style.fontSize = next + 'px';
+      document.getElementById('fsVal').textContent = next + 'px';
+    }
+
+    function adjustLineHeight(delta) {
+      if (!isTeacherAuthenticated || !editMode || !activeEditableEl) return;
+      const style = window.getComputedStyle(activeEditableEl);
+      const fontSize = parseFloat(style.fontSize) || 16;
+      const currentLh = parseFloat(activeEditableEl.style.lineHeight) || (parseFloat(style.lineHeight) / fontSize) || 1.5;
+      const nextLh = Math.min(2.4, Math.max(0.9, +(currentLh + delta).toFixed(2)));
+      activeEditableEl.style.lineHeight = String(nextLh);
+      document.getElementById('lhVal').textContent = nextLh.toFixed(1);
+    }
+
+    function adjustLetterSpacing(delta) {
+      if (!isTeacherAuthenticated || !editMode || !activeEditableEl) return;
+      const style = window.getComputedStyle(activeEditableEl);
+      const fontSize = parseFloat(style.fontSize) || 16;
+      const lsPx = style.letterSpacing === 'normal' ? 0 : parseFloat(style.letterSpacing);
+      const currentEm = activeEditableEl.style.letterSpacing ? parseFloat(activeEditableEl.style.letterSpacing) : (lsPx / fontSize);
+      const nextEm = Math.min(0.25, Math.max(-0.08, +(currentEm + delta).toFixed(2)));
+      activeEditableEl.style.letterSpacing = `${nextEm}em`;
+      document.getElementById('lsVal').textContent = nextEm.toFixed(2);
+    }
+
+    /* ================= CLEAN HTML BUILDER & EXPORT ================= */
+    function buildCleanHTML() {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('body').classList.remove('edit-mode');
+      clone.querySelectorAll('.editable-text').forEach(el => el.removeAttribute('contenteditable'));
+      clone.querySelector('#sessionGrid').innerHTML = '';
+      clone.querySelector('#sessionsData').textContent = '\n' + JSON.stringify(SESSIONS, null, 2) + '\n  ';
+      clone.querySelector('#colorPopover')?.classList.remove('open');
+      clone.querySelector('#teacherAuthModal')?.classList.remove('open');
+      clone.querySelector('#githubConfigModal')?.classList.remove('open');
+      clone.querySelector('#toastNotice')?.classList.remove('show');
+      const tokenInput = clone.querySelector('#ghToken');
+      if (tokenInput) { tokenInput.value = ''; tokenInput.removeAttribute('value'); }
+      const authInput = clone.querySelector('#authCodeInput');
+      if (authInput) { authInput.value = ''; authInput.removeAttribute('value'); }
+      return '<!DOCTYPE html>\n' + clone.outerHTML;
+    }
+
+    function exportCleanHTML() {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const blob = new Blob([buildCleanHTML()], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ponybot_main.html';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('💾 ponybot_main.html 파일이 저장되었습니다.');
+    }
+
+    /* ================= GITHUB DIRECT SYNC (SESSION-ONLY TOKEN) ================= */
+    function getDefaultGithubConfig() {
+      let owner = '', repo = '', path = 'ponybot_main.html';
+      if (location.hostname.endsWith('.github.io')) {
+        owner = location.hostname.replace('.github.io', '');
+        const parts = location.pathname.split('/').filter(Boolean);
+        if (parts.length >= 1) repo = parts[0];
+      }
+      return { owner, repo, branch: 'main', path, token: '' };
+    }
+
+    function loadGithubConfig() {
+      try {
+        const meta = JSON.parse(localStorage.getItem(GH_META_KEY) || 'null') || {};
+        const token = sessionStorage.getItem(GH_TOKEN_KEY) || '';
+        return { ...getDefaultGithubConfig(), ...meta, token };
+      } catch {
+        return getDefaultGithubConfig();
+      }
+    }
+
+    function openGithubConfigModal() {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const cfg = loadGithubConfig();
+      document.getElementById('ghOwner').value = cfg.owner;
+      document.getElementById('ghRepo').value = cfg.repo;
+      document.getElementById('ghBranch').value = cfg.branch || 'main';
+      document.getElementById('ghPath').value = cfg.path || 'ponybot_main.html';
+      document.getElementById('ghToken').value = cfg.token;
+      document.getElementById('githubConfigModal').classList.add('open');
+    }
+
+    function closeGithubConfigModal() {
+      document.getElementById('githubConfigModal').classList.remove('open');
+    }
+
+    function saveGithubConfig() {
+      const meta = {
+        owner: document.getElementById('ghOwner').value.trim(),
+        repo: document.getElementById('ghRepo').value.trim(),
+        branch: document.getElementById('ghBranch').value.trim() || 'main',
+        path: document.getElementById('ghPath').value.trim().replace(/^\/+/, '') || 'ponybot_main.html'
+      };
+      const token = document.getElementById('ghToken').value.trim();
+      if (!meta.owner || !meta.repo || !token) {
+        showToast('⚠️ 아이디, 저장소 이름, 토큰을 모두 입력해 주세요.');
+        return;
+      }
+      localStorage.setItem(GH_META_KEY, JSON.stringify(meta));
+      sessionStorage.setItem(GH_TOKEN_KEY, token);
+      closeGithubConfigModal();
+      showToast('✅ 설정 저장 완료 (토큰은 탭을 닫으면 자동 삭제됩니다)');
+    }
+
+    function clearGithubToken() {
+      sessionStorage.removeItem(GH_TOKEN_KEY);
+      document.getElementById('ghToken').value = '';
+      showToast('🗑️ 저장된 GitHub 토큰이 즉시 삭제되었습니다.');
+    }
+
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      }
+      return btoa(binary);
+    }
+
+    async function pushToGitHub() {
+      if (!isTeacherAuthenticated || !editMode) return;
+      const cfg = loadGithubConfig();
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        openGithubConfigModal();
+        showToast('먼저 GitHub 연동 설정과 토큰을 입력해 주세요.');
+        return;
+      }
+
+      const btn = document.getElementById('btnGithubPush');
+      btn.disabled = true;
+      btn.textContent = '☁️ 반영 중...';
+
+      const apiUrl = `https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${cfg.path.split('/').map(encodeURIComponent).join('/')}`;
+      const headers = {
+        'Authorization': `Bearer ${cfg.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      };
+
+      try {
+        let sha = undefined;
+        const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(cfg.branch)}`, { headers });
+        if (getRes.ok) {
+          sha = (await getRes.json()).sha;
+        } else if (getRes.status !== 404) {
+          throw new Error(`조회 실패 (${getRes.status}) — 저장소명과 토큰 권한을 확인하세요.`);
+        }
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify({
+            message: `포털 메인 페이지 업데이트 (${new Date().toLocaleString('ko-KR')})`,
+            content: utf8ToBase64(buildCleanHTML()),
+            branch: cfg.branch,
+            ...(sha ? { sha } : {})
+          })
+        });
+
+        if (!putRes.ok) {
+          const errData = await putRes.json().catch(() => ({}));
+          throw new Error(errData.message || `업로드 실패 (${putRes.status})`);
+        }
+        showToast('✅ GitHub에 반영 완료! 약 30~60초 후 포털에 적용됩니다.', 4500);
+      } catch (err) {
+        showToast(`❌ 오류: ${err.message}`, 5000);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '☁️ GitHub 반영';
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (document.getElementById('teacherAuthModal').classList.contains('open')) return;
+      if (document.getElementById('githubConfigModal').classList.contains('open')) return;
+      const tag = document.activeElement?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable) return;
+      if (e.key.toLowerCase() === 'e') requestEditMode();
+    });
+
+    renderSessions('all');
+  </script>
+</body>
+</html>
