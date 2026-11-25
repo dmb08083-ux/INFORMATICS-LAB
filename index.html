@@ -511,7 +511,7 @@
 </head>
 <body class="">
 
-  <div id="toastNotice" class="">❌ 오류: 조회 실패 (401)</div>
+  <div id="toastNotice" class="">❌ 오류: 업로드 실패 (409)</div>
 
     <!-- Full-Width Fixed Top Teacher Editor Bar (Unified with Deck) -->
   <header id="editToolbar" onmousedown="if(event.target.tagName !== 'SELECT' &amp;&amp; event.target.tagName !== 'INPUT') event.preventDefault()">
@@ -631,8 +631,8 @@
   <!-- Course Access Code Modal -->
   <div id="accessModal" class="modal-backdrop" onclick="if(event.target.id==='accessModal') closeAccessModal()">
     <div id="accessCard" class="modal-card">
-      <div id="accessCategory" class="modal-kicker">수업 입장</div>
-      <div id="accessCourseTitle" class="modal-title">과정 이름</div>
+      <div id="accessCategory" class="modal-kicker">동아리 입장 확인</div>
+      <div id="accessCourseTitle" class="modal-title">피지컬 AI with 포니봇</div>
       <p class="modal-sub">선생님이 안내한 입장 코드를 입력해 주세요.</p>
       <input id="accessCodeInput" class="code-input" type="password" inputmode="numeric" maxlength="10" placeholder="••••" autocomplete="off">
       <div id="accessErrorMsg" class="modal-error"></div>
@@ -736,7 +736,7 @@
       "id": "ai-world",
       "category": "수업",
       "title": "AI 세상 탐색하기",
-      "desc": "우리가 살아가는 일상 속에서 사용되는 다양한 AI 기술과 그에 따른 윤리적 문제를 탐구합니다.",
+      "desc": "우리가 살아가는 일상 속에서 \n사용되는 다양한 AI 기술과 \n그에 따른 윤리적 문제를 탐구합니다.",
       "tags": [
         "입장 코드",
         "탐구 활동",
@@ -775,7 +775,7 @@
         "MakeCode"
       ],
       "href": "./ponybot_main.html",
-      "codeHash": "85d6385b945c0d602103db39b0b654b2af93b5127938e26a959c123f0789b948",
+      "codeHash": "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0",
       "accent": "#fbe9e7",
       "svgType": "ponybot"
     },
